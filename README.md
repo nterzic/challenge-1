@@ -1,6 +1,6 @@
 # Challenge 1
 
-    - Goal:  Create 3 tier env and all its resources on Kubernetes in a reproducable and configurable manner
+    Goal:  Create 3 tier env and all its resources on Kubernetes in a reproducable and configurable manner
         1. webapp (presentation layer)
         2. python app (business logic layer)
         3. mysql db (data layer)
@@ -20,5 +20,5 @@
         2. Destroy (delete all resources):
             ansible-playbook -i inventory/docker-desktop.yml -v destroy.yml --vault-password-file .ansible_vault
 
-    This can be further automated by using Jenkins but it would require additional setup/work
-    However, you can find draft Jenkinfile as well.
+    This can be further automated by using Jenkins but it would require additional setup/work.
+    However, you can find draft Jenkinfile in the repo as well.
