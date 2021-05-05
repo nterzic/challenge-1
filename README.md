@@ -21,4 +21,4 @@
             ansible-playbook -i inventory/docker-desktop.yml -v destroy.yml --vault-password-file .ansible_vault
 
     This can be further automated by using Jenkins but it would require additional setup/work
-    But, I have created draft Jenkinfile as well
+    However, you can find draft Jenkinfile as well.
