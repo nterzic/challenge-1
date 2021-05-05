@@ -1,0 +1,11 @@
+---
+- name: Get Namespace Info
+  shell: "kubectl get namespace {{ kubernetes_namespace }}"
+  register: namespace_info
+  ignore_errors: true
+
+- name: Create Project Namespace
+  shell: "kubectl create namespace {{ kubernetes_namespace }}"
+  when: namespace_info.rc != 0
+
+# Add any other info you would like to retrieve 

@@ -1,0 +1,46 @@
+- include_tasks: "{{ item }}"
+  with_items:
+    - kubernetes_auth.yml
+    - kubernetes.yml
+
+- name: Delete mysql deployment
+  shell: |
+    kubectl -n {{ kubernetes_namespace }} \
+      delete deployment {{ kubernetes_deployment_name }}-mysql --ignore-not-found
+
+- name: Delete mysql service
+  shell: |
+    kubectl -n {{ kubernetes_namespace }} \
+      delete service {{ kubernetes_deployment_name }}-mysql-svc --ignore-not-found
+
+
+- name: Delete webapp deployment
+  shell: |
+    kubectl -n {{ kubernetes_namespace }} \
+      delete deployment {{ kubernetes_deployment_name }}-webapp --ignore-not-found
+
+- name: Delete web service
+  shell: |
+    kubectl -n {{ kubernetes_namespace }} \
+      delete service {{ kubernetes_deployment_name }}-web-svc --ignore-not-found
+
+
+- name: Delete app (logic layer) deployment
+  shell: |
+    kubectl -n {{ kubernetes_namespace }} \
+      delete deployment {{ kubernetes_deployment_name }}-app --ignore-not-found
+
+
+- name: Delete app service
+  shell: |
+    kubectl -n {{ kubernetes_namespace }} \
+      delete service {{ kubernetes_deployment_name }}-app-svc --ignore-not-found
+
+
+- name: Delete secrets if exists
+  shell: "kubectl -n {{ kubernetes_namespace }} delete secret {{ kubernetes_deployment_name}}-secrets"
+
+- name: Delete configmap if exists
+  shell: "kubectl -n {{ kubernetes_namespace }} delete configmap {{ kubernetes_deployment_name}}-configmap"
+  ignore_errors: true
+

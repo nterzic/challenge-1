@@ -1,0 +1,6 @@
+---
+# App and webapp are just used as example images, not real apps of presentation layer (webapp) and app layer (business/usecase logic)
+# For any actual 3 tier deployment, custom images would have to be built for webapp and app (via CI pipeline)
+kubernetes_webapp_image: nginx:1.7.9
+kubernetes_app_image: python:3.7
+kubernetes_mysql_image: mysql:5.6

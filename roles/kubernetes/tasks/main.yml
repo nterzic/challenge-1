@@ -1,0 +1,42 @@
+---
+- name: Start of Deployment
+  debug:
+    msg: "Start of Deployment"
+
+- include_tasks: "{{ item }}"
+  with_items:
+    - kubernetes_auth.yml
+    - kubernetes.yml
+
+- name: Render deployment templates
+  set_fact:
+    "{{ item }}": "{{ lookup('template', item + '.yml.j2') }}"
+  with_items:
+    - 'configmap'
+    - 'secret'
+    - 'mysql_pv_and_pvc'
+    - 'mysql_deployment'
+    - 'app_deployment'
+    - 'webapp_deployment'
+  # no_log: true
+
+- name: Apply Deployment
+  shell: |
+    echo {{ item | quote }} | kubectl apply -f -
+  with_items:
+    - "{{ configmap }}"
+    - "{{ secret }}"
+    - "{{ mysql_pv_and_pvc }}"
+    - "{{ mysql_deployment }}"
+    - "{{ app_deployment }}"
+    - "{{ webapp_deployment }}"
+  # no_log: true
+
+# Probably somewhere around here should be added seeding/migration of database. Obviously after veryfing that is successfully up and running
+# and any other necessary steps to actually make this deployment fully functional
+
+- name: End of Deployment
+  debug:
+    msg: "End of Deployment"
+
+

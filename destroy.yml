@@ -1,0 +1,10 @@
+---
+- name: Destroy 3 tier env
+  hosts: all
+  gather_facts: false
+  roles:
+    - precheck
+  tasks:
+    - import_role:
+        name: kubernetes
+        tasks_from: destroy

@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ kubernetes_deployment_name }}-web-svc
+spec:
+  type: {{ kubernetes_web_svc_type }}
+  selector:
+    app: {{ kubernetes_deployment_name }}-webapp
+    tier: {{ kubernetes_web_svc_tier_label }}
+  ports:
+  - protocol: TCP
+    port: {{ kubernetes_web_svc_port }} 
+    targetPort: {{ kubernetes_webapp_port }} 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ kubernetes_deployment_name }}-webapp
+spec:
+  replicas: {{ kubernetes_webapp_replicas }}
+  selector:
+    matchLabels:
+      app: {{ kubernetes_deployment_name }}-webapp
+      tier: {{ kubernetes_web_svc_tier_label }}
+  template:
+    metadata:
+      labels:
+        app: {{ kubernetes_deployment_name }}-webapp
+        tier: {{ kubernetes_web_svc_tier_label }}
+    spec:
+      containers:
+      - name: {{ kubernetes_deployment_name }}-webapp
+        image: {{ kubernetes_webapp_image }}
+        ports:
+        - containerPort: {{ kubernetes_webapp_port }}

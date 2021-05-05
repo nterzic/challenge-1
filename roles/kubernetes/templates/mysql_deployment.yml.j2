@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ kubernetes_deployment_name }}-mysql-svc
+spec:
+  ports:
+    - port: {{ mysql_svc_port }}
+  selector:
+    app: {{ kubernetes_deployment_name }}-mysql
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ kubernetes_deployment_name }}-mysql
+spec:
+  selector:
+    matchLabels:
+      app: {{ kubernetes_deployment_name }}-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ kubernetes_deployment_name }}-mysql
+    spec:
+      containers:
+      - image: {{ kubernetes_mysql_image }}
+        name: {{ kubernetes_deployment_name }}-mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ kubernetes_deployment_name }}-secrets
+              key: mysql_password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ kubernetes_deployment_name }}-secrets
+              key: mysql_username
+        ports:
+        - containerPort: {{ mysql_svc_port }}
+        volumeMounts:
+        - name: {{ kubernetes_deployment_name }}-mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: {{ kubernetes_deployment_name }}-mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: {{ kubernetes_deployment_name }}-mysql-pvc

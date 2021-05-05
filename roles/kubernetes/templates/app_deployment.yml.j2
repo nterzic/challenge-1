@@ -1,0 +1,34 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ kubernetes_deployment_name }}-app-svc 
+spec:
+  selector:
+    app: {{ kubernetes_deployment_name }}-app
+  ports:
+  - protocol: TCP
+    port: {{ kubernetes_app_svc_port }}
+    targetPort: {{ kubernetes_app_svc_target_port }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ kubernetes_deployment_name }}-app
+spec:
+  selector:
+    matchLabels:
+      app: {{ kubernetes_deployment_name }}-app
+  replicas: {{ kubernetes_app_replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ kubernetes_deployment_name }}-app
+    spec:
+      containers:
+      - name: {{ kubernetes_deployment_name }}-python-app
+        image: {{ kubernetes_app_image }}
+        command: ['sh', '-c', 'echo Hello Dummy App && sleep infinity']
+        ports:
+        - containerPort: {{ kubernetes_app_svc_target_port }}

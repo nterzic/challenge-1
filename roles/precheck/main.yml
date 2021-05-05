@@ -1,0 +1,27 @@
+---
+- name: kubernetes_namespace should be defined
+  assert:
+    that:
+      - kubernetes_namespace is defined and kubernetes_namespace != ''
+    msg: "Set the value of 'kubernetes_namespace' in the inventory file."
+
+- name: Check if the kubectl command is installed
+  shell: type kubectl
+  register: kubectl_result
+  ignore_errors: yes
+
+- name: Ensure kubectl is installed
+  assert:
+    that:
+      - kubectl_result.rc == 0
+    msg: "Install kubectl: https://kubernetes.io/docs/tasks/tools/install-kubectl/"
+
+- name: Check if inventory file variables are defined
+  fail: msg="Please specify the value of {{item}} in your inventory file"
+  when: "{{item}} is undefined or {{item}} == ''"
+  with_items:
+    - mysql_user
+    - mysql_password
+    - web_app_user
+    - web_app_password
+    - kubernetes_context

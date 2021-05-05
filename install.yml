@@ -1,0 +1,7 @@
+---
+- name: Deploy 3 tier env
+  hosts: all
+  gather_facts: false
+  roles:
+    - precheck
+    - kubernetes

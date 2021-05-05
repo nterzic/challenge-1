@@ -1,0 +1,31 @@
+# This is mock up for local testing, assuming Docker Desktop is installed with Kubernetes enabled
+all:
+  children:
+    nonprod:
+      children:
+        docker-desktop:
+          hosts:
+            docker-desktop:
+              ansible_connection: local
+              ansible_python_interpreter: /usr/bin/env python
+          vars:
+            mysql_user: admin
+            mysql_password: !vault |
+                      $ANSIBLE_VAULT;1.1;AES256
+                      30303764393834313135613062386563643132303833623465343734353733656230623535633137
+                      3364613534653534646263346538393062353930306462370a643037636232633933626636363831
+                      34643432613632393565313861323339326434396633373139633935353233356233303736343637
+                      6464333632663634340a366135333665303865386331643733643264333166316565326638623766
+                      3761
+
+            web_app_user: admin
+            web_app_password: !vault |
+                      $ANSIBLE_VAULT;1.1;AES256
+                      38343762346361326165333864623235636233616631373965336562346236613035373436333136
+                      3066313364373732626230356461336430656530646431390a623736346365323663626536383131
+                      64326635343532663437306462303966626262643337386236326436623834356361323963343965
+                      3536343839393761640a333131356465306364633131313661353532373666616533343230323862
+                      3131
+                      
+            kubernetes_context: docker-desktop
+            kubernetes_namespace: default

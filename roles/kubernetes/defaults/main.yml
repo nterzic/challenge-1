@@ -1,0 +1,15 @@
+---
+kubernetes_web_svc_type: LoadBalancer
+kubernetes_web_svc_tier_label: frontend
+kubernetes_web_svc_port: 80
+
+kubernetes_webapp_port: 80
+kubernetes_webapp_replicas: 3
+
+kubernetes_app_svc_port: 5000
+kubernetes_app_svc_target_port: 5000
+kubernetes_app_replicas: 3
+
+mysql_pv_storage_capacity: 4Gi
+mysql_pvc_storage_request: 2Gi
+mysql_svc_port: 8080
