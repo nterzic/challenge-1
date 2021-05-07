@@ -16,7 +16,7 @@
     Example execution:
 
         1. Deployment (create all resources):
-            ansible-playbook -i inventory/docker-desktop.yml -v install.yml --vault-password-file .ansible_vault
+            ansible-playbook -i inventory/docker-desktop.yml -v deploy.yml --vault-password-file .ansible_vault
         2. Destroy (delete all resources):
             ansible-playbook -i inventory/docker-desktop.yml -v destroy.yml --vault-password-file .ansible_vault
 

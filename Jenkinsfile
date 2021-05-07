@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters{
-        choice(choices: ['install.yml', 'destroy.yml'], description: "Action to perform", name: 'playbook')
+        choice(choices: ['deploy.yml', 'destroy.yml'], description: "Action to perform", name: 'playbook')
         string(description: "Inventory to deploy against", name: "inventory", defaultValue: "docker-desktop.yml")
         password(description: "Vault Secret Key", name: "vault", defaultValue: "")
     }
